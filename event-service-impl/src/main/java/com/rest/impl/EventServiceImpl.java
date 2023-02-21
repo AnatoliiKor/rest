@@ -3,7 +3,6 @@ package com.rest.impl;
 import com.rest.api.EventService;
 import com.rest.dto.Event;
 import com.rest.dto.EventRepository;
-import com.rest.dto.EventType;
 import com.rest.impl.exception.EventDoesNotExistException;
 import org.springframework.context.annotation.Import;
 import org.springframework.stereotype.Service;
