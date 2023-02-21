@@ -21,13 +21,13 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public Event createEvent(String title, String place, String speaker, EventType eventType, String dateTime) {
-        return eventRepository.save(new Event(title, place, speaker, eventType, dateTime));
+    public Event createEvent(Event event) {
+        return eventRepository.save(event);
     }
 
     @Override
     public Event updateEvent(Event event) {
-        return null;
+        return eventRepository.save(event);
     }
 
     @Override
@@ -36,17 +36,17 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public Event deleteEvent(long id) {
-        return null;
+    public void deleteEvent(long id) {
+        eventRepository.deleteById(id);
     }
 
     @Override
     public List<Event> getAllEvents() {
-        return null;
+        return (List<Event>) eventRepository.findAll();
     }
 
     @Override
-    public List<Event> getAllEventsByTitle() {
-        return null;
+    public List<Event> getAllEventsByTitle(String title) {
+        return eventRepository.findByTitle(title);
     }
 }

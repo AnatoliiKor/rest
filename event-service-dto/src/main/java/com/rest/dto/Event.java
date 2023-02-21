@@ -26,11 +26,11 @@ public class Event {
     @Column
     private LocalDateTime dateTime;
 
-    public Event(String title, String place, String speaker, EventType eventType, String dateTime) {
+    public Event(String title, String place, String speaker, String eventType, String dateTime) {
         this.title = title;
         this.place = place;
         this.speaker = speaker;
-        this.eventType = eventType;
+        this.setEventType(eventType);
         this.setDateTime(dateTime);
     }
 
@@ -73,8 +73,8 @@ public class Event {
         return eventType;
     }
 
-    public void setEventType(EventType eventType) {
-        this.eventType = eventType;
+    public void setEventType(String eventType) {
+        this.eventType = EventType.valueOf(eventType);
     }
 
     public LocalDateTime getDateTime() {
