@@ -1,6 +1,8 @@
 package com.rest.api;
 
 import com.rest.dto.Event;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,10 +16,10 @@ public interface EventService {
 
     Event getEvent(long id);
 
-    void deleteEvent(long id);
+    String deleteEvent(long id);
 
-    List<Event> getAllEvents();
+    Page<Event> getAllEvents(Pageable pageable);
 
-    List<Event> getAllEventsByTitle(String title);
+    Page<Event> getAllEventsByTitle(String title, Pageable pageable);
 
 }

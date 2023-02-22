@@ -26,8 +26,14 @@ public class Application implements CommandLineRunner {
 
 	private void loadEventsAsStartup() {
 		eventService.createEvent(new Event("Meeting with Client", "Meeting room", "Tom Henks", "MEETING", "2023-02-22T10:00:00"));
+		eventService.createEvent(new Event("Meeting with Client", "Meeting room", "Tom Henks", "MEETING", "2023-02-23T12:00:00"));
+		eventService.createEvent(new Event("Meeting with Client", "Meeting room", "Tom Henks", "MEETING", "2023-02-24T12:00:00"));
+		eventService.createEvent(new Event("Meeting with Client", "Meeting room", "Tom Henks", "MEETING", "2023-02-25T12:00:00"));
 		eventService.createEvent(new Event("Meeting with Client", "Meeting room", "Tom Henks", "MEETING", "2023-02-26T12:00:00"));
 		eventService.createEvent(new Event("Interview with guest", "Conference room", "Ivan Bogun", "INTERVIEW", "2023-02-23T10:00:00"));
-		eventService.createEvent(new Event("Webinar about conversation", "Conference room", "John Brown", "WEBINAR", "2023-02-24T10:00:00"));
+		eventService.createEvent(new Event("Interview with guest", "Conference room", "Ivan Bogun", "INTERVIEW", "2023-02-24T10:00:00"));
+		eventService.createEvent(new Event("Interview with guest", "Conference room", "Ivan Bogun", "INTERVIEW", "2023-02-25T10:00:00"));
+		eventService.createEvent(new Event("Webinar about conversation", "Conference room", "John Brown", "WEBINAR", "2023-02-27T10:00:00"));
+		eventService.createEvent(new Event("Webinar about conversation", "Conference room", "John Brown", "WEBINAR", "2023-02-28T10:00:00"));
 	}
 }

@@ -3,11 +3,13 @@ package com.rest.impl;
 import com.rest.api.EventService;
 import com.rest.dto.Event;
 import com.rest.dto.EventRepository;
-import com.rest.impl.exception.EventDoesNotExistException;
 import org.springframework.context.annotation.Import;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 @Import(com.rest.dto.Configuration.class)
@@ -31,21 +33,26 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public Event getEvent(long id) {
-        return eventRepository.findById(id).orElseThrow(() -> new EventDoesNotExistException(id));
+        return eventRepository.findById(id).orElseThrow(() -> new NoSuchElementException("This event (id=" + id + ") does not exist."));
     }
 
     @Override
-    public void deleteEvent(long id) {
-        eventRepository.deleteById(id);
+    public String deleteEvent(long id) {
+        if (eventRepository.existsById(id)) {
+            eventRepository.deleteById(id);
+            return String.format("Event with id=%s was deleted", id);
+        } else {
+            throw new NoSuchElementException(String.format("Event with id=%s doesn't exist", id));
+        }
     }
 
     @Override
-    public List<Event> getAllEvents() {
-        return (List<Event>) eventRepository.findAll();
+    public Page<Event> getAllEvents(Pageable pageable) {
+        return eventRepository.findAll(pageable);
     }
 
     @Override
-    public List<Event> getAllEventsByTitle(String title) {
-        return eventRepository.findByTitle(title);
+    public Page<Event> getAllEventsByTitle(String title, Pageable pageable) {
+        return eventRepository.findByTitle(title, pageable);
     }
 }

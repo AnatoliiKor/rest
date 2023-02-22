@@ -1,6 +1,8 @@
 package com.rest.dto;
 
+
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @Entity
@@ -11,9 +13,11 @@ public class Event {
     private long id;
 
     @Column
+    @NotNull
     private String title;
 
     @Column
+    @NotNull
     private String place;
 
     @Column
@@ -24,6 +28,7 @@ public class Event {
     private EventType eventType;
 
     @Column
+    @NotNull
     private LocalDateTime dateTime;
 
     public Event(String title, String place, String speaker, String eventType, String dateTime) {

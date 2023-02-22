@@ -1,12 +1,20 @@
 package com.rest.dto;
 
-import org.springframework.data.repository.CrudRepository;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.data.rest.core.annotation.RepositoryRestResource;
+import org.springframework.data.rest.core.annotation.RestResource;
 
-import java.util.List;
+@RepositoryRestResource(collectionResourceRel = "rest-events", path = "rest-events")
+public interface EventRepository extends PagingAndSortingRepository<Event, Long> {
 
-@Repository
-public interface EventRepository extends CrudRepository<Event, Long> {
+    Page<Event> findByTitle(String title, Pageable pageable);
+    Page<Event> findAll(Pageable pageable);
 
-    List<Event> findByTitle(String title);
+    @Override
+    @RestResource(exported=false)
+    void deleteById(Long aLong);
+
+
 }
