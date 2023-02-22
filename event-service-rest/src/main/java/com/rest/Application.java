@@ -1,4 +1,4 @@
-package com.rest.app;
+package com.rest;
 
 import com.rest.api.EventService;
 import com.rest.dto.Event;
@@ -8,10 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Import;
 
 @SpringBootApplication
-@Import(com.rest.impl.Configuration.class)
 @OpenAPIDefinition(
         info = @Info(
                 title = "Events REST API",

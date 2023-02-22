@@ -1,4 +1,4 @@
-package com.rest.app;
+package com.rest.controller;
 
 import com.rest.api.EventService;
 import com.rest.dto.Event;
