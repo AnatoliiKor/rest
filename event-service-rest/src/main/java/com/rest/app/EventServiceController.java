@@ -1,7 +1,11 @@
 package com.rest.app;
 
-import com.rest.dto.Event;
 import com.rest.api.EventService;
+import com.rest.dto.Event;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -16,7 +20,8 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 
 @RestController
-@RequestMapping(path = "/event")
+@RequestMapping(path = "/events")
+@Tag(name = "Events", description = "The Events API")
 public class EventServiceController {
     private final EventService eventService;
 
@@ -25,33 +30,45 @@ public class EventServiceController {
     }
 
     @GetMapping("/{id}")
-    public Event getEvent(@PathVariable (value = "id") long id) {
+    @Operation(summary = "Find the event by id")
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "OK"),
+            @ApiResponse(responseCode = "404", description = "Event not found")})
+    public Event getEvent(@PathVariable(value = "id") long id) {
         return eventService.getEvent(id);
     }
 
     @GetMapping()
-    public Page<Event> getAllEvents(@RequestParam(required = false) String title, Pageable pageable) {
-        if (title != null) {
-            return eventService.getAllEventsByTitle(title, pageable);
-        } else {
-            return eventService.getAllEvents(pageable);
-        }
+    @Operation(summary = "Find all events")
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "OK")})
+    public Page<Event> getAllEvents(Pageable pageable) {
+        return eventService.getAllEvents(pageable);
+
+    }
+
+    @GetMapping("/title")
+    @Operation(summary = "Find all events for specified title")
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "OK")})
+    public List<Event> getAllEventsForTitle(@RequestParam String title) {
+        return eventService.getAllEventsByTitle(title);
     }
 
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
+    @Operation(summary = "Create an event")
     public Event createEvent(@Valid @RequestBody Event event) {
         return eventService.createEvent(event);
     }
 
     @PutMapping("/{id}")
-    public Event updateEvent(@PathVariable (value = "id") long id, @Valid @RequestBody Event event) {
+    @Operation(summary = "Update an event")
+    public Event updateEvent(@PathVariable(value = "id") long id, @Valid @RequestBody Event event) {
         event.setId(id);
         return eventService.updateEvent(event);
     }
 
     @DeleteMapping("/{id}")
-    public String deleteEvent(@PathVariable (value = "id") long id) {
+    @Operation(summary = "Delete an event")
+    public String deleteEvent(@PathVariable(value = "id") long id) {
         return eventService.deleteEvent(id);
     }
 

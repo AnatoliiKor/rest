@@ -52,7 +52,7 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public Page<Event> getAllEventsByTitle(String title, Pageable pageable) {
-        return eventRepository.findByTitle(title, pageable);
+    public List<Event> getAllEventsByTitle(String title) {
+        return eventRepository.findByTitle(title);
     }
 }

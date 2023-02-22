@@ -20,6 +20,6 @@ public interface EventService {
 
     Page<Event> getAllEvents(Pageable pageable);
 
-    Page<Event> getAllEventsByTitle(String title, Pageable pageable);
+    List<Event> getAllEventsByTitle(String title);
 
 }
