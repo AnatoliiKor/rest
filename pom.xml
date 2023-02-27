@@ -8,7 +8,8 @@
 		<module>event-service-rest</module>
 		<module>event-service-dto</module>
 		<module>event-service-impl</module>
-	</modules>
+        <module>event-messaging</module>
+    </modules>
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>

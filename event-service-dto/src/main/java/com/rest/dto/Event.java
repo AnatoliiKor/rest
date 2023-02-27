@@ -89,4 +89,16 @@ public class Event {
     public void setDateTime(String dateTime) {
         this.dateTime = LocalDateTime.parse(dateTime);
     }
+
+    @Override
+    public String toString() {
+        return "Event{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", place='" + place + '\'' +
+                ", speaker='" + speaker + '\'' +
+                ", eventType=" + eventType +
+                ", dateTime=" + dateTime +
+                '}';
+    }
 }
