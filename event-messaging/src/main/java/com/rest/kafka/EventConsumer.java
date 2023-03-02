@@ -1,41 +1,47 @@
 package com.rest.kafka;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rest.api.EventService;
 import com.rest.dto.Event;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 
 @Component
 //@Profile("kafka")
 public class EventConsumer {
+    @Autowired
     private EventService eventService;
 
-    @KafkaListener(topics = "create-event-request", groupId = "object", containerFactory = "eventListener")
-    public void createEventObject(Event event) {
-        System.out.println(event.toString());
+    // Json JsonDeserializer returns List<LinkedHashMap> that need to convert into List<Event>. Here ObjectMapper is used
+    @Autowired
+    ObjectMapper mapper;
+
+
+    @KafkaListener(topics = "create-event-request", groupId = "eventsREST", containerFactory = "eventListListener")
+    public void createEvent(List<LinkedHashMap> events) {
+        convertLinkedHashMapToEventList(events).forEach(e -> eventService.createEvent(e));
     }
 
-    @KafkaListener(topics = "list-event-request", groupId = "list", containerFactory = "eventListListener")
-    public void createEventListObject(List<Event> events) {
-        System.out.println(events.toString());
+    @KafkaListener(topics = "update-event-request", groupId = "eventsREST", containerFactory = "eventListListener")
+    public void updateEvent(List<LinkedHashMap> events) {
+        convertLinkedHashMapToEventList(events).forEach(e -> eventService.updateEvent(e));
+
     }
 
-//    @KafkaListener(topics = "topicName", groupId = "foo")
-//    public void createEvent(List<Event> events) {
-//        events.forEach(e -> eventService.createEvent(e));
-//    }
-//
-//    @KafkaListener
-//    public void updateEvent(List<Event> events) {
-//        events.forEach(e -> eventService.updateEvent(e));
-//    }
-//
-//    @KafkaListener
-//    public void deleteEvent(List<Identifier> eventIds) {
-//        eventIds.forEach(e -> eventService.deleteEvent((Long)e.getValue()));
-//    }
+    // Identifier has no Creators, like default constructor, cannot deserialize from Object value
+    @KafkaListener(topics = "delete-event-request", groupId = "eventsREST", containerFactory = "eventListListener")
+    public void deleteEvent(List<LinkedHashMap> eventIds) {
+//        mapper.convertValue(eventIds, new TypeReference<List<Identifier>>() { }).forEach(e -> eventService.deleteEvent((Long)e.getValue()));
+        convertLinkedHashMapToEventList(eventIds).forEach(e -> eventService.deleteEvent(e.getId()));
+    }
 
+    private List<Event> convertLinkedHashMapToEventList(List<LinkedHashMap> maps) {
+        return mapper.convertValue(maps, new TypeReference<List<Event>>() { });
+    }
 }
 

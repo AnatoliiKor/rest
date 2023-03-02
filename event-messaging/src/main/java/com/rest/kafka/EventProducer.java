@@ -18,7 +18,7 @@ public class EventProducer implements EventMessaging {
 
     @Override
     public void createEvent(Event event) {
-//        sendMessage("create-event-notification", "New event was created. Id = " + event.getId());
+        sendMessage("create-event-notification", "New event was created. Id = " + event.getId());
     }
 
     @Override

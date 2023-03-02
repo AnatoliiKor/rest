@@ -39,7 +39,7 @@ public class Event {
         this.setDateTime(dateTime);
     }
 
-    protected Event() {
+    public Event() {
     }
 
     public long getId() {
