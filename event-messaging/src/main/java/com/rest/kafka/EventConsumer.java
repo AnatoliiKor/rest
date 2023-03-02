@@ -5,6 +5,8 @@ import com.rest.dto.Event;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 //@Profile("kafka")
 public class EventConsumer {
@@ -13,6 +15,11 @@ public class EventConsumer {
     @KafkaListener(topics = "create-event-request", groupId = "object", containerFactory = "eventListener")
     public void createEventObject(Event event) {
         System.out.println(event.toString());
+    }
+
+    @KafkaListener(topics = "list-event-request", groupId = "list", containerFactory = "eventListListener")
+    public void createEventListObject(List<Event> events) {
+        System.out.println(events.toString());
     }
 
 //    @KafkaListener(topics = "topicName", groupId = "foo")

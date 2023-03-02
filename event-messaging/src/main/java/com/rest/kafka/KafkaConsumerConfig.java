@@ -13,7 +13,9 @@ import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 import org.springframework.kafka.support.serializer.ErrorHandlingDeserializer;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @EnableKafka
@@ -23,6 +25,7 @@ public class KafkaConsumerConfig {
     @Value(value = "${spring.kafka.bootstrap-servers}")
     private String bootstrapAddress;
 
+    // Creating an eventListenerConsumerFactory
     @Bean
     public ConsumerFactory<String, Event> consumerFactory() {
 
@@ -35,11 +38,30 @@ public class KafkaConsumerConfig {
         return new DefaultKafkaConsumerFactory<>(props, new StringDeserializer(), new JsonDeserializer<>(Event.class));
     }
 
-    // Creating a Listener
     @Bean
     public ConcurrentKafkaListenerContainerFactory<String, Event> eventListener() {
         ConcurrentKafkaListenerContainerFactory<String, Event> factory = new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(consumerFactory());
+        return factory;
+    }
+
+    // Creating an eventListListenerConsumerFactory
+    @Bean
+    public ConsumerFactory<String, List<Event>> consumerListFactory() {
+
+        Map<String, Object> props = new HashMap<>();
+        props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
+        props.put(ConsumerConfig.GROUP_ID_CONFIG, "groupId");
+        props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
+        props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
+        props.put(ErrorHandlingDeserializer.VALUE_DESERIALIZER_CLASS, JsonDeserializer.class.getName());
+        return new DefaultKafkaConsumerFactory<>(props, new StringDeserializer(),
+                new JsonDeserializer<>(List.class));
+    }
+    @Bean
+    public ConcurrentKafkaListenerContainerFactory<String, List<Event>> eventListListener() {
+        ConcurrentKafkaListenerContainerFactory<String, List<Event>> factory = new ConcurrentKafkaListenerContainerFactory<>();
+        factory.setConsumerFactory(consumerListFactory());
         return factory;
     }
 }
