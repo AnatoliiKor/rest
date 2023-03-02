@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.hateoas.Link;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -18,6 +19,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 
 @RestController
 @RequestMapping(path = "/events")
@@ -34,22 +37,27 @@ public class EventServiceController {
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "OK"),
             @ApiResponse(responseCode = "404", description = "Event not found")})
     public Event getEvent(@PathVariable(value = "id") long id) {
-        return eventService.getEvent(id);
+        Event event = eventService.getEvent(id);
+        event.add(linkTo(EventServiceController.class).slash(event.getId()).withSelfRel());
+        return event;
     }
 
     @GetMapping()
     @Operation(summary = "Find all events")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "OK")})
     public Page<Event> getAllEvents(Pageable pageable) {
-        return eventService.getAllEvents(pageable);
-
+        Page<Event> events = eventService.getAllEvents(pageable);
+        events.forEach(e -> e.add(linkTo(EventServiceController.class).slash(e.getId()).withSelfRel()));
+        return events;
     }
 
     @GetMapping("/title")
     @Operation(summary = "Find all events for specified title")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "OK")})
     public List<Event> getAllEventsForTitle(@RequestParam String title) {
-        return eventService.getAllEventsByTitle(title);
+        List<Event> events = eventService.getAllEventsByTitle(title);
+        events.forEach(e -> e.add(linkTo(EventServiceController.class).slash(e.getId()).withSelfRel()));
+        return events;
     }
 
     @PostMapping()

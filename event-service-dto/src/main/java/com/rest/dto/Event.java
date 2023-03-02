@@ -1,12 +1,14 @@
 package com.rest.dto;
 
 
+import org.springframework.hateoas.RepresentationModel;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @Entity
-public class Event {
+public class Event extends RepresentationModel<Event> {
 
     @Id
     @GeneratedValue
