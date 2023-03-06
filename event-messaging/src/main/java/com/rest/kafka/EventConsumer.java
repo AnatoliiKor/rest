@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rest.api.EventService;
 import com.rest.dto.Event;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
 
@@ -12,7 +13,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 @Component
-//@Profile("kafka")
+@Profile("kafka")
 public class EventConsumer {
     @Autowired
     private EventService eventService;
