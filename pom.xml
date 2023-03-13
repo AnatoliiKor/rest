@@ -8,6 +8,7 @@
 		<module>event-service-rest</module>
 		<module>event-service-dto</module>
 		<module>event-service-impl</module>
+		<module>lambda</module>
 	</modules>
 	<parent>
 		<groupId>org.springframework.boot</groupId>
